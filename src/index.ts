@@ -1,17 +1,21 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 // @ts-ignore
-import dbConnect from './config/dbConnect';
-import express from 'express';
+import dbConnect from "./config/dbConnect";
+import express from "express";
+import { challengeRoutes } from "./routes/p1";
 
-const app = express()
+dotenv.config();
+
+const app = express();
+
+dbConnect();
 
 app.use(express.json());
 
-dotenv.config();
-dbConnect();
+app.use("/api/challenges", challengeRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-	console.log(`Server is running at ${PORT}`);
+  console.log(`Server is running at ${PORT}`);
 });

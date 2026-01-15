@@ -4,7 +4,7 @@
 
 - Monolito em Node
 - Criar conta no MongoDB (sandbox = free tier) ✅
-- Iniciar mongodb e depois express (inserir alguns componentes, ex: bodyParser)
+- Iniciar mongodb e depois express (inserir alguns componentes, ex: bodyParser) ✅
 -  Separar entre endpoints publicos (read-only) e privados (CRUD)
    - Para privado criar auth simples (ex: apenas verificar se header veio com `authentication`)
    - Public so teremos o GET e o GET:Id
