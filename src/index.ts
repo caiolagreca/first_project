@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 // @ts-ignore
 import dbConnect from "./config/dbConnect";
 import express from "express";
-import { challengeRoutes } from "./routes/p1";
+import { challengePublicRoutes } from "./routes/p1";
+import { challengePrivateRoutes } from "./routes/v1";
 
 dotenv.config();
 
@@ -12,7 +13,8 @@ dbConnect();
 
 app.use(express.json());
 
-app.use("/api/challenges", challengeRoutes);
+app.use("/api/challenges", challengePublicRoutes);
+app.use("/api/challenges", challengePrivateRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;

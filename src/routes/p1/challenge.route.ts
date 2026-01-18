@@ -1,7 +1,8 @@
 //Public endpoints - GET/GET:Id
 import express from "express";
-import { fetchChallenges } from "../../app/challenge";
+import { fecthChallenge, fetchChallenges } from "../../app/challenge";
 
-export const challengeRoutes = express.Router();
+export const challengePublicRoutes = express.Router();
 
-challengeRoutes.get("/", fetchChallenges);
+challengePublicRoutes.get("/", fetchChallenges);
+challengePublicRoutes.get("/:id", fecthChallenge);
