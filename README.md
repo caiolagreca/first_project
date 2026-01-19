@@ -21,14 +21,14 @@
 - /src
   - index.ts
   - /models
-    - /chalenge
+    - /challenge
       - challenge-item.model.ts
       - index.ts
     - /misc (for generic models)
-      - adress.model.ts
+      - address.model.ts
       - key-value.model.ts
       - index.ts
-  - /heplers
+  - /helpers
     - util.ts (reused functions)
     - index.ts
   - /app
