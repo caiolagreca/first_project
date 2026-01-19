@@ -1,6 +1,4 @@
-# TODO
-
-## NOTES
+# NOTES
 
 - Node monolith ✅
 - Create MongoDB account (sandbox = free tier) ✅
@@ -14,11 +12,11 @@
 - Routes are always nested with the domain (all routes are domains)
 - DDD flow: routes -> app -> repository -> domain
 
-## PATTERNS
+# PATTERNS
 
 - Filenames in lowercase and separated by dash if compound name `-` (ex: user-challenge.route.ts)
 
-## PROJECT STRUCTURE
+# PROJECT STRUCTURE
 
 - /src
   - index.ts
