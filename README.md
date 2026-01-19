@@ -2,22 +2,24 @@
 
 ## NOTES
 
-- Monolito em Node ✅
-- Criar conta no MongoDB (sandbox = free tier) ✅
-- Iniciar mongodb e depois express (inserir alguns componentes, ex: bodyParser) ✅
-- Usar library mongoose (schema para estruturar JSON) ✅
-- Criar dominino publico `Challenge` ✅
--  Separar entre endpoints publicos (read-only) e privados (CRUD) ✅
-   - Para privado criar auth simples (ex: apenas verificar se header veio com `authentication`) ✅
-   - Public so teremos o GET e o GET:Id ✅
-   - Private teremos o CRUD com todos os metodos basicos (PUT/PATCH/DELETE/POST/GET/GET:Id) ✅
-- Route esta sempre aninhada com o domain (todas as rotas sao dominios)
-- Fluxo DDD: routes -> app -> repository -> domain
+- Node monolith ✅
+- Create MongoDB account (sandbox = free tier) ✅
+- Start MongoDB first, then Express (add some components, ex: bodyParser) ✅
+- Use Mongoose library (schema to structure JSON) ✅
+- Create public `Challenge` domain ✅
+- Separate between public endpoints (read-only) and private endpoints (CRUD) ✅
+  - For private: create simple auth (ex: just check if `authentication` header is present) ✅
+  - Public will only have GET and GET:Id ✅
+  - Private will have full CRUD with all basic methods (PUT/PATCH/DELETE/POST/GET/GET:Id) ✅
+- Routes are always nested with the domain (all routes are domains)
+- DDD flow: routes -> app -> repository -> domain
 
-## PADROES
-- Nome dos arquivos minusculos e separados por dash caso seja nome composto `-` (ex: user-challenge.route.ts)
+## PATTERNS
+
+- Filenames in lowercase and separated by dash if compound name `-` (ex: user-challenge.route.ts)
 
 ## PROJECT STRUCTURE
+
 - /src
   - index.ts
   - /models
