@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { dbConnect } from "./config/dbConnect";
+import { dbConnect } from "./config/db-connect";
 import express from "express";
 import { challengePublicRoutes } from "./routes/p1";
 import { challengePrivateRoutes } from "./routes/v1";
