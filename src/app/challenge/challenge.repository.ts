@@ -1,23 +1,31 @@
+import { ChallengeFormModel, ChallengeModel, RequestUserModel } from "../../models";
 import { Challenge, ChallengeDomain } from "./challenge.domain";
 
 export class ChallengeRepository {
-  create = async (data: Partial<ChallengeDomain>) => {
+
+  constructor(user: RequestUserModel) {
+    console.log({ user });
+  }
+
+  create = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
     return Challenge.create(data);
   };
 
-  findAll = async () => {
+  findAll = async (): Promise<ChallengeModel[]> => {
+            console.log({ response: 123 })
+    
     return Challenge.find({});
   };
 
-  findById = async (id: string) => {
+  findById = async (id: string): Promise<ChallengeModel | null> => {
     return Challenge.findById(id);
   };
 
-  update = async (id: string, data: Partial<ChallengeDomain>) => {
+  update = async (id: string, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | null> => {
     return Challenge.findByIdAndUpdate(id, data, { new: true });
   };
 
-  delete = async (id: string) => {
+  delete = async (id: string): Promise<ChallengeModel | null> => {
     return Challenge.findByIdAndDelete(id);
   };
 }

@@ -3,20 +3,15 @@ const { Schema } = mongoose;
 
 export interface ChallengeDomain {
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  date: Date;
 }
 
-const challengeSchema = new Schema(
-  {
+const challengeSchema = new Schema<ChallengeDomain>({
     name: {
       type: String,
       required: [true, "Name is required"],
     },
-  },
-  {
-    timestamps: true,
-  }
-);
+    date: Date
+});
 
-export const Challenge = mongoose.model("Challenges", challengeSchema);
+export const Challenge = mongoose.model("Challenge", challengeSchema);
