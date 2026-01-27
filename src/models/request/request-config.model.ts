@@ -1,3 +1,4 @@
 export interface RequestConfigModel {
-    token: any
+    token: any;
+    isAnnonymous: boolean;
 }

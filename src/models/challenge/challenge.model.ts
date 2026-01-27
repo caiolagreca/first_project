@@ -1,5 +1,7 @@
+import { ObjectId } from "mongoose";
+
 export interface ChallengeModel {
-    id: string;
+    _id: ObjectId;
     name: string;
-    date: Date;
+    date?: Date;
 }

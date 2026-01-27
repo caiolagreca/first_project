@@ -5,40 +5,26 @@ import { ChallengeFormModel, ChallengeModel, RequestConfigModel, RequestUserMode
 
 export class ChallengeApp extends AppBase<ChallengeRepository> {
 
-  constructor(user: RequestUserModel, config: RequestConfigModel) {
-    super('challenge', user, config);
-  }
+    constructor(user: RequestUserModel, config: RequestConfigModel) {
+        super('challenge', user, config);
+    }
 
-  createChallenge = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
-      
-      const challenge = await this.repository.create(data);
+    create = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
 
-      return challenge;
+        const challenge = await this.repository.create(data);
 
-  };
+        return challenge;
 
-  getAllChallenges = async (): Promise<ChallengeModel[]> => {
-    console.log({ response: 1 })
-    console.log(this.repository.findAll);
-    const challenges = await this.repository.findAll();
-    return challenges;
-  };
+    };
 
-  getChallengeById = async (id: string): Promise<ChallengeModel | null> => {
-    const challenge = await this.repository.findById(id);
-    return challenge;
-  };
+    getAll = async (): Promise<ChallengeModel[]> => {
+        const challenges = await this.repository.findAll();
+        return challenges;
+    };
 
-  updateChallenge = async (id: string, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | null> => {
-    
-    const challenge = await this.repository.update(id, data);
+    getById = async (id: string): Promise<ChallengeModel | null> => {
+        const challenges = await this.repository.findById(id);
+        return challenges;
+    };
 
-    return challenge;
-  };
-
-  deleteChallenge = async (id: string): Promise<ChallengeModel | null> => {
-    const challenge = await this.repository.delete(id);
-
-    return challenge;
-  };
 }

@@ -15,10 +15,10 @@ export class AppBase<R> {
 
         const filePath = `${process.cwd()}/dist/app/${domain}/${domain}.repository`;
         const module = require(filePath);
-        
+
         // Handle both default export and named export
         const RepositoryClass = module.default || module[`${domain.charAt(0).toUpperCase() + domain.slice(1)}Repository`] || Object.values(module)[0];
-        
+
         this.repository = new (RepositoryClass as any)(this.user) as R;
     }
 

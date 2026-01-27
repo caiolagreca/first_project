@@ -12,12 +12,9 @@ router.use((_, res: ExpressResponse<ChallengeApp>, next) => {
 });
 
 router.get('/', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-    res.locals.app.getAllChallenges().then((response) => {
+    res.locals.app.getAll().then((response) => {
         HttpResponse.ok(response)(req, res);
     }).catch((error) => {
-        HttpResponse.error(error)(req, res); 
+        HttpResponse.error(error)(req, res);
     });
 });
-
-// router.get("/:id", app.getChallengeById);
-

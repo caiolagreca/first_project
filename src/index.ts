@@ -2,7 +2,8 @@ import dotenv from "dotenv";
 import { dbConnect } from "./config/db-connect";
 import express from "express";
 import routerInit from "./routes";
-import { resolveToken } from "./middleware/resolve-token";
+import { globalErrorHandler, resolveToken } from "./helpers/middleware";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -16,15 +17,18 @@ const PORT = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    
+
     await dbConnect();
-    
-    app.use(resolveToken);
+
+    app.use(bodyParser.json());
+    app.use(resolveToken());
 
     routerInit(app);
 
+    app.use(globalErrorHandler);
+
     app.listen(PORT, () => {
-      console.log(`Server is running at ${PORT}`);
+      console.info(`Server is running at ${PORT}`);
     });
   } catch (err) {
     console.error("Failed to start server: ", err);

@@ -3,37 +3,44 @@ import { ExpressResponse, ExpressRequest } from "../models";
 
 export class HttpResponse {
 
-    static ok(data: any) {
+	static ok(data: any) {
 
-        let statusCode = 200;
-        if (!data) {
-            statusCode = 201;
-        } 
+		let statusCode = 200;
+		if (!data) {
+			statusCode = 201;
+		}
 
-        const payload = {
-            data
-        }
+		const payload = {
+			data
+		}
 
-        return (req: ExpressRequest, res: ExpressResponse) => {
-            HttpResponse.response(res, statusCode, payload);
-        }
-    }
+		return (req: ExpressRequest, res: ExpressResponse) => {
+			HttpResponse.response(res, statusCode, payload);
+		}
+	}
 
-    static error(data: any) {
+	static error(err: any) {
 
-        let statusCode = 400;
+		let statusCode = 400;
 
-        return (req: ExpressRequest, res: ExpressResponse) => {
-            HttpResponse.response(res, statusCode, data);
-        }
-    }
+		const payload = {
+			error: {
+				code: err.message,
+				message: err.toString()
+			}
+		}
 
-    static response(res: ExpressResponse, code: number, payload: any) {
+		return (req: ExpressRequest, res: ExpressResponse) => {
+			HttpResponse.response(res, statusCode, payload);
+		}
+	}
+
+	static response(res: ExpressResponse, code: number, payload: any) {
 
 		if (payload)
 			res.status(code).json(payload);
 		else
 			res.sendStatus(code);
-    }
+	}
 
 }

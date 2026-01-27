@@ -1,31 +1,32 @@
-import { ChallengeFormModel, ChallengeModel, RequestUserModel } from "../../models";
-import { Challenge, ChallengeDomain } from "./challenge.domain";
+import { ObjectId } from "mongodb";
+import { ChallengeFormModel, ChallengeModel } from "../../models";
+import { Challenge } from "./challenge.domain";
+import { RepositoryBase } from "../../helpers";
 
-export class ChallengeRepository {
+export class ChallengeRepository extends RepositoryBase {
 
-  constructor(user: RequestUserModel) {
-    console.log({ user });
-  }
+	create = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
 
-  create = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
-    return Challenge.create(data);
-  };
+		Object.assign(data, {
+			userId: this.user.id
+		});
 
-  findAll = async (): Promise<ChallengeModel[]> => {
-            console.log({ response: 123 })
-    
-    return Challenge.find({});
-  };
+		return Challenge.create(data);
+	};
 
-  findById = async (id: string): Promise<ChallengeModel | null> => {
-    return Challenge.findById(id);
-  };
+	findAll = async (): Promise<ChallengeModel[]> => {
+		return Challenge.find({});
+	};
 
-  update = async (id: string, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | null> => {
-    return Challenge.findByIdAndUpdate(id, data, { new: true });
-  };
+	findById = async (id: string): Promise<ChallengeModel | null> => {
+		return Challenge.findById(id);
+	};
 
-  delete = async (id: string): Promise<ChallengeModel | null> => {
-    return Challenge.findByIdAndDelete(id);
-  };
+	update = async (id: string, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | null> => {
+		return Challenge.findByIdAndUpdate(id, data, { new: true });
+	};
+
+	delete = async (id: string): Promise<ChallengeModel | null> => {
+		return Challenge.findByIdAndDelete(id);
+	};
 }
