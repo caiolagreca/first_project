@@ -1,30 +1,33 @@
-import { Request, Response } from "express";
-import { ChallengeRepository } from "./challenge.repository";
+import { Repository } from "./challenge.repository";
 import { AppBase } from "../../helpers";
-import { ChallengeFormModel, ChallengeModel, RequestConfigModel, RequestUserModel } from "../../models";
+import { ChallengeFormModel, ChallengeModel, SessionConfigModel, SessionUserModel } from "../../models";
 
-export class ChallengeApp extends AppBase<ChallengeRepository> {
+export class ChallengeApp extends AppBase<Repository> {
 
-    constructor(user: RequestUserModel, config: RequestConfigModel) {
-        super('challenge', user, config);
+    constructor(user: SessionUserModel, config?: SessionConfigModel) {
+        super(Repository, user, config);
     }
 
     create = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
 
-        const challenge = await this.repository.create(data);
+        const challenge = await this.repository.create<ChallengeModel>(data);
 
         return challenge;
 
     };
 
     getAll = async (): Promise<ChallengeModel[]> => {
-        const challenges = await this.repository.findAll();
+
+        const challenges = await this.repository.find<ChallengeModel>({});
+
         return challenges;
     };
 
     getById = async (id: string): Promise<ChallengeModel | null> => {
-        const challenges = await this.repository.findById(id);
-        return challenges;
+        
+        const challenge = await this.repository.findById<ChallengeModel>(id);
+        
+        return challenge;
     };
 
 }

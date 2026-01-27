@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { RequestConfigModel, RequestUserModel } from "../request";
+import { SessionConfigModel, SessionUserModel } from "../session";
 
 export interface IHttpRequestData<A, O> {
-    user: RequestUserModel;
-    config: RequestConfigModel;
+    user: SessionUserModel;
+    config: SessionConfigModel;
     app: A;
     orch: O;
 }

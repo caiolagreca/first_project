@@ -32,7 +32,7 @@ throw new Error('SERVER_AUTH_REQUIRED')
 res.locals.user = user;
 
 res.locals.config = res.locals.config || {};
-res.locals.config.isAnnonymous = !Boolean(user);
+res.locals.config.allowAnnonymous = !Boolean(user);
 
 } catch (err) {
 error = err;
