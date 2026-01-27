@@ -1,1 +1,1 @@
-export * from './http-request.model';
+export * from './http-request-data.model';
