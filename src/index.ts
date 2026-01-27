@@ -4,6 +4,7 @@ import express from "express";
 import routerInit from "./routes";
 import { globalErrorHandler, resolveToken } from "./helpers/middleware";
 import bodyParser from "body-parser";
+import { setupSwagger, generateSwaggerFile } from "./helpers/swagger.helper";
 
 dotenv.config();
 
@@ -21,11 +22,18 @@ const start = async () => {
     await dbConnect();
 
     app.use(bodyParser.json());
+    
+    // Setup Swagger documentation BEFORE routes
+    setupSwagger(app);
+    
     app.use(resolveToken());
 
     routerInit(app);
 
     app.use(globalErrorHandler);
+    
+    // Generate Swagger JSON file (optional)
+    generateSwaggerFile();
 
     app.listen(PORT, () => {
       console.info(`Server is running at ${PORT}`);

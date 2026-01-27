@@ -139,3 +139,6 @@ vscode/
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Auto-generated Swagger documentation
+swagger.json
