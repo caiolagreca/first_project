@@ -43,3 +43,45 @@ router.post('/', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
         HttpResponse.error(error)(req, res);
     });
 });
+
+//////// 
+// PUT
+//////// 
+router.put('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+
+    const { id } = req.params;
+
+    res.locals.app.update(id, req.body).then((response) => {
+        HttpResponse.ok(response)(req, res);
+    }).catch((error) => {
+        HttpResponse.error(error)(req, res);
+    });
+});
+
+//////// 
+// PATCH
+//////// 
+router.patch('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+
+    const { id } = req.params;
+
+    res.locals.app.update(id, req.body).then((response) => {
+        HttpResponse.ok(response)(req, res);
+    }).catch((error) => {
+        HttpResponse.error(error)(req, res);
+    });
+});
+
+//////// 
+// DELEGE
+//////// 
+router.delete('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+
+    const { id } = req.params;
+
+    res.locals.app.delete(id).then((response) => {
+        HttpResponse.ok(response)(req, res);
+    }).catch((error) => {
+        HttpResponse.error(error)(req, res);
+    });
+});

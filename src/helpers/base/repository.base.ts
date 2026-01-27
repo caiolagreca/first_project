@@ -1,4 +1,6 @@
-import { RootFilterOperators } from "mongodb";
+import { RootFilterOperators, UpdateOptions } from "mongodb";
+import { DeleteResult } from "mongoose";
+import { QueryOptions } from "mongoose";
 import { Model, MongooseUpdateQueryOptions, PipelineStage, ProjectionType, Schema, UpdateQuery, Document, UpdateWriteOpResult } from "mongoose";
 
 export class RepositoryBase<T> {
@@ -19,9 +21,9 @@ export class RepositoryBase<T> {
             throw new Error('REPO_AUTH_DENIED');
     }
 
-    async findById<T>(id: string, project?: ProjectionType<T>): Promise<T | null> {
+    async findById<T>(id: string, project?: ProjectionType<T>): Promise<T | undefined> {
         project = project || { __v: 0 };
-        
+
         const result = await this.model.findById(id, project).exec() as any;
         return result;
     }
@@ -31,6 +33,9 @@ export class RepositoryBase<T> {
     }
       
     public async find<D>(filter: any, project?: ProjectionType<T>, options?: { sort?: any, skip?: any, limit?: any }): Promise<D[]> {
+        
+        project = project || { __v: 0 };
+
         let find = this._model.find(filter, project);
         if (options?.sort) {
             find = find.sort(options?.sort);
@@ -50,6 +55,9 @@ export class RepositoryBase<T> {
     }
 
     public async findOne<D>(filter: any, project?: ProjectionType<T>): Promise<D | undefined> {
+        
+        project = project || { __v: 0 };
+
         const result = await this._model.findOne(filter, project).exec();
         const json = result?.toJSON();
         return json as D | undefined;
@@ -65,7 +73,7 @@ export class RepositoryBase<T> {
         return this._model.updateOne(filter, data, options).exec();
     }
 
-    public async findOneAndUpdate<D>(filter: any, data: UpdateQuery<T>, options?: MongooseUpdateQueryOptions<T>): Promise<D | undefined> {
+    public async findOneAndUpdate<D>(filter: any, data: UpdateQuery<T>, options?: QueryOptions<T>): Promise<D | undefined> {
         const result = await this._model.findOneAndUpdate(filter, data, options).exec();
         const json = result?.toJSON();
         return result as D | undefined;
@@ -76,9 +84,9 @@ export class RepositoryBase<T> {
         return result as any;
     }
 
-    public async deleteOne<D>(filter: any): Promise<D | undefined> {
+    public async deleteOne<D>(filter: any): Promise<DeleteResult> {
         const result = await this._model.deleteOne(filter).exec();
-        return result as D | undefined;
+        return result;
     }
 
     public async findOneAndDelete<D>(filter: any): Promise<D | undefined> {

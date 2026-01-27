@@ -23,11 +23,25 @@ export class ChallengeApp extends AppBase<Repository> {
         return challenges;
     };
 
-    getById = async (id: string): Promise<ChallengeModel | null> => {
+    getById = async (id: string): Promise<ChallengeModel | undefined> => {
         
         const challenge = await this.repository.findById<ChallengeModel>(id);
         
         return challenge;
     };
+
+    update = async (id: string, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | undefined> => {
+
+        const challenge = await this.repository.updateById(id, data);
+        
+        return challenge;
+    }
+
+    delete = async (id: string): Promise<boolean> => {
+
+        const hasDeleted = await this.repository.deleteById(id);
+        
+        return hasDeleted;
+    }
 
 }
