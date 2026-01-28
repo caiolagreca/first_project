@@ -1,3 +1,9 @@
+# SETUP
+
+// Base64 of a json to simulate the JWT
+Authentication: eyJpZCI6IjEiLCJmaXJzdE5hbWUiOiJUaGlhZ28iLCJzdXJuYW1lIjoiQmVybmFyZGVzIn0=
+
+
 # NOTES
 
 - Node monolith ✅

@@ -1,68 +1,47 @@
-import { Request, Response } from "express";
-import { ChallengeRepository } from "./challenge.repository";
+import { Repository } from "./challenge.repository";
+import { AppBase } from "../../helpers";
+import { ChallengeFormModel, ChallengeModel, SessionConfigModel, SessionUserModel } from "../../models";
 
-export class ChallengeApp {
-  private repository: ChallengeRepository;
+export class ChallengeApp extends AppBase<Repository> {
 
-  constructor(repository: ChallengeRepository) {
-    this.repository = repository;
-  }
-
-  createChallenge = async (req: Request, res: Response) => {
-    try {
-      const challenge = await this.repository.create({
-        name: req.body.name,
-      });
-      res.status(201).json(challenge);
-    } catch (err) {
-      res.status(400).json(err);
+    constructor(user: SessionUserModel, config?: SessionConfigModel) {
+        super(Repository, user, config);
     }
-  };
 
-  getAllChallenges = async (req: Request, res: Response) => {
-    try {
-      const challenges = await this.repository.findAll();
-      res.status(200).json(challenges);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  };
+    create = async (data: ChallengeFormModel): Promise<ChallengeModel> => {
 
-  getChallengeById = async (req: Request, res: Response) => {
-    const { id } = req.params as { id: string };
-    try {
-      const challenge = await this.repository.findById(id);
-      if (!challenge)
-        return res.status(404).json({ message: "User not found" });
-      res.status(200).json(challenge);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  };
+        const challenge = await this.repository.create<ChallengeModel>(data);
 
-  updateChallenge = async (req: Request, res: Response) => {
-    const { id } = req.params as { id: string };
-    try {
-      const challenge = await this.repository.update(id, {
-        name: req.body.name,
-      });
-      if (!challenge)
-        return res.status(404).json({ message: "User not found" });
-      res.status(201).json(challenge);
-    } catch (err) {
-      res.status(400).json(err);
-    }
-  };
+        return challenge;
 
-  deleteChallenge = async (req: Request, res: Response) => {
-    const { id } = req.params as { id: string };
-    try {
-      const challenge = await this.repository.delete(id);
-      if (!challenge)
-        return res.status(404).json({ message: "User not found" });
-      res.json(challenge);
-    } catch (err) {
-      res.status(400).json(err);
+    };
+
+    getAll = async (): Promise<ChallengeModel[]> => {
+
+        const challenges = await this.repository.find<ChallengeModel>({});
+
+        return challenges;
+    };
+
+    getById = async (id: string): Promise<ChallengeModel | undefined> => {
+        
+        const challenge = await this.repository.findById<ChallengeModel>(id);
+        
+        return challenge;
+    };
+
+    update = async (id: string, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | undefined> => {
+
+        const challenge = await this.repository.updateById(id, data);
+        
+        return challenge;
     }
-  };
+
+    delete = async (id: string): Promise<boolean> => {
+
+        const hasDeleted = await this.repository.deleteById(id);
+        
+        return hasDeleted;
+    }
+
 }

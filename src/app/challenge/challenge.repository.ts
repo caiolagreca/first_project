@@ -1,23 +1,36 @@
-import { Challenge, ChallengeDomain } from "./challenge.domain";
+import { Types } from "mongoose";
+import { ChallengeFormModel, ChallengeModel } from "../../models";
+import { Domain, IDomain } from "./challenge.domain";
+import { RepositoryBase } from "../../helpers";
 
-export class ChallengeRepository {
-  create = async (data: Partial<ChallengeDomain>) => {
-    return Challenge.create(data);
-  };
+export class Repository extends RepositoryBase<IDomain> {
 
-  findAll = async () => {
-    return Challenge.find({});
-  };
+	constructor() {
+		super(Domain);
+	}
 
-  findById = async (id: string) => {
-    return Challenge.findById(id);
-  };
+	updateById = async (id: String, data: Partial<ChallengeFormModel>): Promise<ChallengeModel | undefined> => {
 
-  update = async (id: string, data: Partial<ChallengeDomain>) => {
-    return Challenge.findByIdAndUpdate(id, data, { new: true });
-  };
+        const filter = {
+            _id: id
+        }
 
-  delete = async (id: string) => {
-    return Challenge.findByIdAndDelete(id);
-  };
+        const challenge = await this.findOneAndUpdate<ChallengeModel>(filter, data, { new: true });
+
+		return challenge;
+        
+	}
+
+	deleteById = async (id: String): Promise<boolean> => {
+
+        const filter = {
+            _id: id
+        }
+
+        const result = await this.deleteOne(filter);
+		
+		return result.deletedCount > 0;
+        
+	}
+
 }

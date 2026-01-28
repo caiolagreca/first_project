@@ -1,0 +1,13 @@
+{
+  "watch": ["dist"],
+  "ext": "js,json",
+  "ignore": [
+    "swagger.json",
+    "dist/swagger.json",
+    "*.log",
+    "node_modules/**",
+    ".git/**"
+  ],
+  "delay": "1000",
+  "verbose": false
+}

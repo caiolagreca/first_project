@@ -1,22 +1,21 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import { Document, model, Schema, Types } from "mongoose";
 
-export interface ChallengeDomain {
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface IDomain extends Document {
+    name: string;
+    userId: string;
+    date?: Date;
 }
 
-const challengeSchema = new Schema(
-  {
+const schema = new Schema<IDomain>({
     name: {
-      type: String,
-      required: [true, "Name is required"],
+        type: String,
+        required: [true, "Name is required"],
     },
-  },
-  {
-    timestamps: true,
-  }
-);
+    userId: Types.ObjectId,
+    date: {
+        type: Date,
+        default: Date
+    }
+});
 
-export const Challenge = mongoose.model("Challenges", challengeSchema);
+export const Domain = model<IDomain>("challenge", schema);
