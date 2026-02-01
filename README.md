@@ -3,7 +3,6 @@
 // Base64 of a json to simulate the JWT
 Authentication: eyJpZCI6IjEiLCJmaXJzdE5hbWUiOiJUaGlhZ28iLCJzdXJuYW1lIjoiQmVybmFyZGVzIn0=
 
-
 # NOTES
 
 - Node monolith ✅
@@ -50,3 +49,15 @@ Authentication: eyJpZCI6IjEiLCJmaXJzdE5hbWUiOiJUaGlhZ28iLCJzdXJuYW1lIjoiQmVybmFy
     - /v1 (for private endpoints)
       - challenge.route.ts
       - index.ts
+
+# QUESTIONS
+
+- Documents interface extendend from mongoose in domain file. What is that?
+- No challenge.domain, estou confuso de onde vem o userId (cade o Schema para criacao do usuario?)
+- In the Interface at `challenge.domain` why not insert userId as `Types.ObjectId` instead of `string`?
+- Difference between `challengeFormModel` and `challengeModel`?
+- why create a `RepositoryBase` re-writting all methods from zero, if we could import all these methods from `mongoose`?
+
+# TODO
+
+- Criar dicionario/catalogo com mensagens de error/response
