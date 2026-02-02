@@ -1,10 +1,5 @@
 import { AppBase } from "../../helpers";
-import {
-  ChallengeFormModel,
-  ChallengeModel,
-  SessionConfigModel,
-  SessionUserModel,
-} from "../../models";
+import { SessionConfigModel, SessionUserModel } from "../../models";
 import {
   ChallengeCommentFormModel,
   ChallengeCommentModel,

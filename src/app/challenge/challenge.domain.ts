@@ -2,7 +2,7 @@ import { Document, model, Schema, Types } from "mongoose";
 
 export interface IDomain extends Document {
   name: string;
-  userId: string; // Why not Types.ObjectId?
+  userId: string;
   date?: Date;
 }
 

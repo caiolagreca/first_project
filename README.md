@@ -52,7 +52,6 @@ Authentication: eyJpZCI6IjEiLCJmaXJzdE5hbWUiOiJUaGlhZ28iLCJzdXJuYW1lIjoiQmVybmFy
 
 # QUESTIONS
 
-- Documents interface extendend from mongoose in domain file. What is that?
 - No challenge.domain, estou confuso de onde vem o userId (cade o Schema para criacao do usuario?)
 - In the Interface at `challenge.domain` why not insert userId as `Types.ObjectId` instead of `string`?
 - Difference between `challengeFormModel` and `challengeModel`?
