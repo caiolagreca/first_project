@@ -3,16 +3,16 @@ import { HttpResponse } from "../../helpers";
 import { ChallengeApp } from "../../app/challenge/challenge.app";
 import { ExpressRequest, ExpressResponse } from "../../models";
 
-export const router = express.Router();
+export const challengeRouter = express.Router();
 
-router.use((_, res: ExpressResponse<ChallengeApp>, next) => {
-    res.locals.app = new ChallengeApp(res.locals.user, res.locals.config);
-    next();
+challengeRouter.use((_, res: ExpressResponse<ChallengeApp>, next) => {
+  res.locals.app = new ChallengeApp(res.locals.user, res.locals.config);
+  next();
 });
 
-//////// 
+////////
 // GET
-//////// 
+////////
 
 /**
  * @swagger
@@ -50,15 +50,21 @@ router.use((_, res: ExpressResponse<ChallengeApp>, next) => {
  *       500:
  *         description: Internal server error
  */
-router.get('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+challengeRouter.get(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
     const { id } = req.params;
 
-    res.locals.app.getById(id).then((response) => {
+    res.locals.app
+      .getById(id)
+      .then((response) => {
         HttpResponse.ok(response)(req, res);
-    }).catch((error) => {
+      })
+      .catch((error) => {
         HttpResponse.error(error)(req, res);
-    });
-});
+      });
+  },
+);
 
 /**
  * @swagger
@@ -88,18 +94,23 @@ router.get('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => 
  *       500:
  *         description: Internal server error
  */
-router.get('/', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-    res.locals.app.getAll().then((response) => {
+challengeRouter.get(
+  "/",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+    res.locals.app
+      .getAll()
+      .then((response) => {
         HttpResponse.ok(response)(req, res);
-    }).catch((error) => {
+      })
+      .catch((error) => {
         HttpResponse.error(error)(req, res);
-    });
-});
+      });
+  },
+);
 
-
-//////// 
+////////
 // POST
-//////// 
+////////
 
 /**
  * @swagger
@@ -135,18 +146,23 @@ router.get('/', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
  *       500:
  *         description: Internal server error
  */
-router.post('/', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-
-    res.locals.app.create(req.body).then((response) => {
+challengeRouter.post(
+  "/",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+    res.locals.app
+      .create(req.body)
+      .then((response) => {
         HttpResponse.ok(response)(req, res);
-    }).catch((error) => {
+      })
+      .catch((error) => {
         HttpResponse.error(error)(req, res);
-    });
-});
+      });
+  },
+);
 
-//////// 
+////////
 // PUT
-//////// 
+////////
 
 /**
  * @swagger
@@ -192,20 +208,25 @@ router.post('/', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
  *       500:
  *         description: Internal server error
  */
-router.put('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-
+challengeRouter.put(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
     const { id } = req.params;
 
-    res.locals.app.update(id, req.body).then((response) => {
+    res.locals.app
+      .update(id, req.body)
+      .then((response) => {
         HttpResponse.ok(response)(req, res);
-    }).catch((error) => {
+      })
+      .catch((error) => {
         HttpResponse.error(error)(req, res);
-    });
-});
+      });
+  },
+);
 
-//////// 
+////////
 // PATCH
-//////// 
+////////
 
 /**
  * @swagger
@@ -263,20 +284,25 @@ router.put('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => 
  *       500:
  *         description: Internal server error
  */
-router.patch('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-
+challengeRouter.patch(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
     const { id } = req.params;
 
-    res.locals.app.update(id, req.body).then((response) => {
+    res.locals.app
+      .update(id, req.body)
+      .then((response) => {
         HttpResponse.ok(response)(req, res);
-    }).catch((error) => {
+      })
+      .catch((error) => {
         HttpResponse.error(error)(req, res);
-    });
-});
+      });
+  },
+);
 
-//////// 
+////////
 // DELETE
-//////// 
+////////
 
 /**
  * @swagger
@@ -309,13 +335,18 @@ router.patch('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) =
  *       500:
  *         description: Internal server error
  */
-router.delete('/:id', (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-
+challengeRouter.delete(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
     const { id } = req.params;
 
-    res.locals.app.delete(id).then((response) => {
+    res.locals.app
+      .delete(id)
+      .then((response) => {
         HttpResponse.ok(response)(req, res);
-    }).catch((error) => {
+      })
+      .catch((error) => {
         HttpResponse.error(error)(req, res);
-    });
-});
+      });
+  },
+);

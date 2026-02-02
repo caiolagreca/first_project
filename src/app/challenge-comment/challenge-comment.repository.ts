@@ -33,6 +33,7 @@ export class Repository extends RepositoryBase<IDomain> {
     };
 
     const result = await this.deleteOne(filter);
+    
     return result.deletedCount > 0;
   };
 }

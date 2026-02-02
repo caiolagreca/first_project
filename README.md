@@ -57,6 +57,11 @@ Authentication: eyJpZCI6IjEiLCJmaXJzdE5hbWUiOiJUaGlhZ28iLCJzdXJuYW1lIjoiQmVybmFy
 - In the Interface at `challenge.domain` why not insert userId as `Types.ObjectId` instead of `string`?
 - Difference between `challengeFormModel` and `challengeModel`?
 - why create a `RepositoryBase` re-writting all methods from zero, if we could import all these methods from `mongoose`?
+- Why removed db connection from `try/catch` block?
+- Not sure if I understood `allowAnnonymous` in `UserBase` class
+- So doesn't need to instantiate repository (dependency injection?) in the App class (`ChallengeApp` for example)?
+- Not sure if understood `router.use`
+- ` HttpResponse.ok(response)(req, res);` what is this ()() ?
 
 # TODO
 
