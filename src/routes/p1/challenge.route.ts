@@ -1,4 +1,4 @@
-//Public endpoint - GET
+//Public endpoints - GET/GET:Id
 import express from "express";
 import { HttpResponse } from "../../helpers";
 import { ChallengeApp } from "../../app/challenge/challenge.app";

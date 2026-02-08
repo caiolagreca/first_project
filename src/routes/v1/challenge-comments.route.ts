@@ -16,20 +16,6 @@ challengeCommentRouter.use(
   },
 );
 
-challengeCommentRouter.get(
-  "/",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
-    res.locals.app
-      .getAll()
-      .then((response) => {
-        HttpResponse.ok(response)(req, res);
-      })
-      .catch((error) => {
-        HttpResponse.error(error)(req, res);
-      });
-  },
-);
-
 /**
  * @swagger
  * /v1/challenge-comments:
@@ -60,12 +46,10 @@ challengeCommentRouter.get(
  */
 
 challengeCommentRouter.get(
-  "/:id",
+  "/",
   (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
-    const { id } = req.params;
-
     res.locals.app
-      .getById(id)
+      .getAll()
       .then((response) => {
         HttpResponse.ok(response)(req, res);
       })
@@ -112,11 +96,13 @@ challengeCommentRouter.get(
  *         description: Internal server error
  */
 
-challengeCommentRouter.post(
-  "/",
+challengeCommentRouter.get(
+  "/:id",
   (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
+    const { id } = req.params;
+
     res.locals.app
-      .create(req.body)
+      .getById(id)
       .then((response) => {
         HttpResponse.ok(response)(req, res);
       })
@@ -161,12 +147,11 @@ challengeCommentRouter.post(
  *         description: Internal server error
  */
 
-challengeCommentRouter.put(
-  "/:id",
+challengeCommentRouter.post(
+  "/",
   (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
-    const { id } = req.params;
     res.locals.app
-      .update(id, req.body)
+      .create(req.body)
       .then((response) => {
         HttpResponse.ok(response)(req, res);
       })
@@ -221,7 +206,7 @@ challengeCommentRouter.put(
  *         description: Internal server error
  */
 
-challengeCommentRouter.patch(
+challengeCommentRouter.put(
   "/:id",
   (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
     const { id } = req.params;
@@ -286,12 +271,12 @@ challengeCommentRouter.patch(
  *         description: Internal server error
  */
 
-challengeCommentRouter.delete(
+challengeCommentRouter.patch(
   "/:id",
   (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
     const { id } = req.params;
     res.locals.app
-      .delete(id)
+      .update(id, req.body)
       .then((response) => {
         HttpResponse.ok(response)(req, res);
       })
@@ -332,3 +317,18 @@ challengeCommentRouter.delete(
  *       500:
  *         description: Internal server error
  */
+
+challengeCommentRouter.delete(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
+    const { id } = req.params;
+    res.locals.app
+      .delete(id)
+      .then((response) => {
+        HttpResponse.ok(response)(req, res);
+      })
+      .catch((error) => {
+        HttpResponse.error(error)(req, res);
+      });
+  },
+);

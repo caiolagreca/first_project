@@ -18,20 +18,19 @@ const PORT = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-
     await dbConnect();
 
     app.use(bodyParser.json());
-    
+
     // Setup Swagger documentation BEFORE routes
     setupSwagger(app);
-    
+
     app.use(resolveToken());
 
     routerInit(app);
 
     app.use(globalErrorHandler);
-    
+
     // Generate Swagger JSON file (optional)
     generateSwaggerFile();
 
