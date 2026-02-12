@@ -18,7 +18,9 @@ const init = (app: Express) => {
           const routeModule = require(path.join(folderPath, file));
 
           const router =
-            routeModule.challengeRouter || routeModule.challengeCommentRouter;
+            routeModule.challengeRouter ||
+            routeModule.challengeCommentRouter ||
+            routeModule.googleRouter;
           if (router) {
             app.use(routePath, router);
             console.info(`✓ Registered route: ${routePath}`);

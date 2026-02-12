@@ -6,24 +6,48 @@ import {
   SessionConfigModel,
   SessionUserModel,
 } from "../../models";
+import axios from "axios";
 
 export class PlacesDetailsApp extends UserBase {
-  private placesClient: PlacesClient;
-
   constructor(user: SessionUserModel, config: SessionConfigModel) {
-    super(user, config, { allowAnnonymous: true });
-    this.placesClient = new PlacesClient();
+    super(user, config);
   }
 
   searchText = async (
     data: PlacesDetailsFormModel,
   ): Promise<PlaceDetailsModel> => {
     try {
-      const response = await this.placesClient.searchText(data);
+      const apiKey = process.env.GOOGLE_API_KEY;
+      const url = "https://places.googleapis.com/v1/places:searchText";
+      const fields = [
+        "places.id",
+        "places.displayName",
+        "places.formattedAddress",
+        // add more fields as needed
+      ].join(",");
+      const response = await axios.post(
+        url + `?fields=${fields}`,
+        {
+          textQuery: data.textQuery,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": fields,
+          },
+        },
+      );
 
       return {
-        displayName: response.places.displayName || [],
+        places: (response.data.places || []).map((place: any) => ({
+          id: place.id || "",
+          formattedAddress: place.formattedAddress || "",
+          displayName: { text: place.displayName?.text || "" },
+        })),
       };
-    } catch (error) {}
+    } catch (err) {
+      throw new Error(`GOOGLE_PLACES_SEARCH_ERRROR: ${err}`);
+    }
   };
 }

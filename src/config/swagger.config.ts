@@ -41,6 +41,37 @@ const swaggerOptions: Options = {
                 }
             },
             schemas: {
+                PlacesDetailsFormModel: {
+                    type: "object",
+                    required: ["textQuery"],
+                    properties: {
+                        textQuery: {
+                            type: "string",
+                            example: "pizza near Sydney"
+                        }
+                    }
+                },
+                PlaceDetailsModel: {
+                    type: "object",
+                    properties: {
+                        places: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    id: { type: "string", example: "ChIJN1blFLsB60sR8aYjCbg_AAE" },
+                                    formattedAddress: { type: "string", example: "123 Main St, Sydney" },
+                                    displayName: {
+                                        type: "object",
+                                        properties: {
+                                            text: { type: "string", example: "Pizza Place" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 Challenge: {
                     type: "object",
                     properties: {
