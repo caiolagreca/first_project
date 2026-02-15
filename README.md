@@ -52,11 +52,6 @@ Authentication: eyJpZCI6IjEiLCJmaXJzdE5hbWUiOiJUaGlhZ28iLCJzdXJuYW1lIjoiQmVybmFy
 
 # QUESTIONS
 
-- why create a `RepositoryBase` re-writting all methods from zero, if we could import all these methods from `mongoose`?
-- Why removed db connection from `try/catch` block?
-- So doesn't need to instantiate repository (dependency injection?) in the App class (`ChallengeApp` for example)?
-- ` HttpResponse.ok(response)(req, res);` what is this ()() ? It's a high order function. A function that returns another function.
-
 # TODO
 
 - Create dictionary/catalog with error/response messages
