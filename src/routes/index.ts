@@ -20,7 +20,8 @@ const init = (app: Express) => {
           const router =
             routeModule.challengeRouter ||
             routeModule.challengeCommentRouter ||
-            routeModule.googleRouter;
+            routeModule.googleRouter ||
+            routeModule.stripeProductRouter;
           if (router) {
             app.use(routePath, router);
             console.info(`✓ Registered route: ${routePath}`);
