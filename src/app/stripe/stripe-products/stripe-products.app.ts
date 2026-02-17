@@ -23,4 +23,6 @@ export class StripeProductApp extends AppBase<Repository> {
     console.log(product);
     return product;
   };
+
+  update = async () => {};
 }
