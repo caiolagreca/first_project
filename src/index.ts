@@ -5,6 +5,7 @@ import routerInit from "./routes";
 import { globalErrorHandler, resolveToken } from "./helpers/middleware";
 import bodyParser from "body-parser";
 import { setupSwagger, generateSwaggerFile } from "./helpers/swagger.helper";
+import path from "node:path";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ const start = async () => {
     await dbConnect();
 
     app.use(bodyParser.json());
+    app.use(express.static(path.join(__dirname, "client")));
 
     // Setup Swagger documentation BEFORE routes
     setupSwagger(app);

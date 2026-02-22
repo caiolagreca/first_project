@@ -21,7 +21,9 @@ const init = (app: Express) => {
             routeModule.challengeRouter ||
             routeModule.challengeCommentRouter ||
             routeModule.googleRouter ||
-            routeModule.stripeProductRouter;
+            routeModule.stripeProductRouter ||
+            routeModule.stripeCheckoutRouter ||
+            routeModule.stripePriceRouter;
           if (router) {
             app.use(routePath, router);
             console.info(`✓ Registered route: ${routePath}`);

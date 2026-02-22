@@ -3,18 +3,18 @@ import { ExpressRequest, ExpressResponse } from "../../models";
 import { StripeCheckoutApp } from "../../app/stripe/stripe-checkout";
 import { HttpResponse } from "../../helpers";
 
-export const StripeCheckoutRouter = express.Router();
+export const stripeCheckoutRouter = express.Router();
 
-StripeCheckoutRouter.use((_, res: ExpressResponse<StripeCheckoutApp>, next) => {
+stripeCheckoutRouter.use((_, res: ExpressResponse<StripeCheckoutApp>, next) => {
   res.locals.app = new StripeCheckoutApp(res.locals.user, res.locals.config);
   next();
 });
 
-StripeCheckoutRouter.post(
-  "/create-checkout-session",
+stripeCheckoutRouter.post(
+  "/",
   (req: ExpressRequest, res: ExpressResponse<StripeCheckoutApp>) => {
     res.locals.app
-      .checkout()
+      .checkout(req.body)
       .then((response) => {
         HttpResponse.ok(response)(req, res);
       })
