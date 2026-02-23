@@ -1,3 +1,3 @@
 export interface StripeCheckoutFormModel {
-  line_items: [{ price: string }];
+  line_items: [{ price: string; quantity: number }];
 }

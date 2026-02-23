@@ -15,12 +15,10 @@ export class StripeCheckoutApp extends UserBase {
     data: StripeCheckoutFormModel,
   ): Promise<StripeCheckoutModel> => {
     const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: data.line_items[0].price,
-          quantity: 1,
-        },
-      ],
+      line_items: data.line_items.map((item) => ({
+        price: item.price,
+        quantity: item.quantity,
+      })),
       mode: "payment",
       success_url: `http://localhost:3000/stripe-success.html`,
     });
