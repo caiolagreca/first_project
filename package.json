@@ -9,6 +9,7 @@
 		"start:dev": "concurrently \"tsc --watch\" \"nodemon ./dist/index.js\"",
 		"swagger:generate": "tsc && node ./dist/scripts/generate-swagger.js",
 		"build": "tsc && npm run copy:assets",
+		"clean": "rm -rf dist",
 		"copy:assets": "cpx \"src/**/*.{html,css,js,json,png,jpg,jpeg,gif,svg,ico,env}\" dist && cpx \"src/client/**/*\" dist/client"
 	},
 	"repository": {

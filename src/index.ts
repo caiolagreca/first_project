@@ -3,9 +3,10 @@ import { dbConnect } from "./config/db-connect";
 import express from "express";
 import routerInit from "./routes";
 import { globalErrorHandler, resolveToken } from "./helpers/middleware";
+import path from "node:path";
 import bodyParser from "body-parser";
 import { setupSwagger, generateSwaggerFile } from "./helpers/swagger.helper";
-import path from "node:path";
+import { stripeWebhookRouter } from "./routes/p1";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ const start = async () => {
   try {
     await dbConnect();
 
+    app.use("/p1/stripe-webhooks", stripeWebhookRouter);
     app.use(bodyParser.json());
     app.use(express.static(path.join(__dirname, "client")));
 

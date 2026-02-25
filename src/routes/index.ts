@@ -23,7 +23,8 @@ const init = (app: Express) => {
             routeModule.googleRouter ||
             routeModule.stripeProductRouter ||
             routeModule.stripeCheckoutRouter ||
-            routeModule.stripePriceRouter;
+            routeModule.stripePriceRouter ||
+            routeModule.stripeWebhookRouter;
           if (router) {
             app.use(routePath, router);
             console.info(`✓ Registered route: ${routePath}`);

@@ -1,33 +1,38 @@
 import { UserBase } from "../../../helpers";
 import { SessionConfigModel, SessionUserModel } from "../../../models";
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+import Stripe from "stripe";
 
 export class StripeWebhookApp extends UserBase {
   constructor(user: SessionUserModel, config: SessionConfigModel) {
     super(user, config);
   }
 
-  webhook = async (data: any) => {
-    const signature = data.headers["stripe-signature"];
+  webhook = async (
+    rawBody: Buffer,
+    signature: string | undefined,
+    res: any,
+  ) => {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+      apiVersion: "2026-01-28.clover",
+    });
+
     try {
       const event = stripe.webhooks.constructEvent(
-        data,
+        rawBody,
         signature,
         process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET_KEY,
       );
       console.log(`event received: ${event}`);
 
       if (event.type === "customer.created") {
-        const customer = await stripe.customer.retrieve(event.data.object.id);
+        const customer = await stripe.customers.retrieve(event.data.object.id);
         console.log("customer retrieved: ", customer);
       } else {
         console.log("unhandled event", event.type);
       }
+      res.status(200).json({ received: true });
     } catch (error) {
-      console.log(
-        `⚠️ Webhook signature verification failed.` /* err.message */,
-      );
-      return data.sendStatus(400);
+      console.log(`Webhook signature verification failed: ${error}`);
     }
   };
 }
