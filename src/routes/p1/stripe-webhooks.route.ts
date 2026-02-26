@@ -2,14 +2,8 @@ import express from "express";
 import { ExpressRequest, ExpressResponse } from "../../models";
 import { StripeWebhookApp } from "../../app/stripe/stripe-webhooks/stripe-webhooks.app";
 import { HttpResponse } from "../../helpers";
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export const stripeWebhookRouter = express.Router();
-
-stripeWebhookRouter.use((_, res: ExpressResponse<StripeWebhookApp>, next) => {
-  res.locals.app = new StripeWebhookApp(res.locals.user, res.locals.config);
-  next();
-});
 
 stripeWebhookRouter.post(
   "/",
@@ -19,8 +13,10 @@ stripeWebhookRouter.post(
     const signature = Array.isArray(rawSignature)
       ? rawSignature[0]
       : rawSignature;
-    res.locals.app
-      .webhook(req.body, signature, res)
+    const app = new StripeWebhookApp();
+
+    app
+      .webhook(req.body, signature)
       .then((response) => {
         HttpResponse.ok(response)(req, res);
       })
