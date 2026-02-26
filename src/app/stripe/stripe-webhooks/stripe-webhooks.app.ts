@@ -15,12 +15,21 @@ export class StripeWebhookApp extends UserBase {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
       apiVersion: "2026-01-28.clover",
     });
+    const endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET_KEY;
+
+    if (!signature) {
+      return res.status(400).json({ error: "Missing Stripe-Signature header" });
+    }
+
+    if (!endpointSecret) {
+      return res.status(500).json({ error: "Missing webhook endpoint secret" });
+    }
 
     try {
       const event = stripe.webhooks.constructEvent(
         rawBody,
         signature,
-        process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET_KEY,
+        endpointSecret,
       );
       console.log(`event received: ${event}`);
 
