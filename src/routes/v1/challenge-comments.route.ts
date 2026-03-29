@@ -1,39 +1,33 @@
 import express from "express";
-import { HttpResponse } from "../../helpers";
-import { ChallengeApp } from "../../app/challenge/challenge.app";
 import { ExpressRequest, ExpressResponse } from "../../models";
+import { ChallengeCommentModel } from "../../models/challenge-comments";
+import { ChallengeCommentApp } from "../../app/challenge-comment";
+import { HttpResponse } from "../../helpers";
 
-export const challengeRouter = express.Router();
+export const challengeCommentRouter = express.Router();
 
-challengeRouter.use((_, res: ExpressResponse<ChallengeApp>, next) => {
-  res.locals.app = new ChallengeApp(res.locals.user, res.locals.config);
-  next();
-});
-
-////////
-// GET
-////////
+challengeCommentRouter.use(
+  (_, res: ExpressResponse<ChallengeCommentApp>, next) => {
+    res.locals.app = new ChallengeCommentApp(
+      res.locals.user,
+      res.locals.config,
+    );
+    next();
+  },
+);
 
 /**
  * @swagger
- * /v1/challenge/{id}:
+ * /v1/challenge-comments:
  *   get:
- *     summary: Get a challenge by ID
- *     description: Retrieve a specific challenge by its unique identifier
- *     tags: [v1/challenge]
+ *     summary: Get all challenge comments
+ *     description: Retrieve a list of all challenge comments
+ *     tags: [v1/challenge-comments]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The challenge ID
- *         example: 507f1f77bcf86cd799439011
  *     responses:
  *       200:
- *         description: Challenge retrieved successfully
+ *         description: List of challenge comments retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -42,7 +36,58 @@ challengeRouter.use((_, res: ExpressResponse<ChallengeApp>, next) => {
  *                 - type: object
  *                   properties:
  *                     data:
- *                       $ref: '#/components/schemas/Challenge'
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/ChallengeComment'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ *       500:
+ *         description: Internal server error
+ */
+
+challengeCommentRouter.get(
+  "/",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
+    res.locals.app
+      .getAll()
+      .then((response) => {
+        HttpResponse.ok(response)(req, res);
+      })
+      .catch((error) => {
+        HttpResponse.error(error)(req, res);
+      });
+  },
+);
+
+/**
+ * @swagger
+ * /v1/challenge-comments/{id}:
+ *   get:
+ *     summary: Get a challenge comment by ID
+ *     description: Retrieve a specific challenge comment by its unique identifier
+ *     tags: [v1/challenge-comments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The comment ID
+ *         example: 609e129e8bfa4b0015b708a1
+ *     responses:
+ *       200:
+ *         description: Comment retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/ChallengeComment'
  *       401:
  *         $ref: '#/components/responses/UnauthorizedError'
  *       404:
@@ -50,9 +95,10 @@ challengeRouter.use((_, res: ExpressResponse<ChallengeApp>, next) => {
  *       500:
  *         description: Internal server error
  */
-challengeRouter.get(
+
+challengeCommentRouter.get(
   "/:id",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
     const { id } = req.params;
 
     res.locals.app
@@ -68,57 +114,11 @@ challengeRouter.get(
 
 /**
  * @swagger
- * /v1/challenge:
- *   get:
- *     summary: Get all challenges
- *     description: Retrieve a list of all challenges
- *     tags: [v1/challenge]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of challenges retrieved successfully
- *         content:
- *           application/json:
- *             schema:
- *               allOf:
- *                 - $ref: '#/components/schemas/SuccessResponse'
- *                 - type: object
- *                   properties:
- *                     data:
- *                       type: array
- *                       items:
- *                         $ref: '#/components/schemas/Challenge'
- *       401:
- *         $ref: '#/components/responses/UnauthorizedError'
- *       500:
- *         description: Internal server error
- */
-challengeRouter.get(
-  "/",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-    res.locals.app
-      .getAll()
-      .then((response) => {
-        HttpResponse.ok(response)(req, res);
-      })
-      .catch((error) => {
-        HttpResponse.error(error)(req, res);
-      });
-  },
-);
-
-////////
-// POST
-////////
-
-/**
- * @swagger
- * /v1/challenge:
+ * /v1/challenge-comments:
  *   post:
- *     summary: Create a new challenge
- *     description: Create a new challenge with the provided data
- *     tags: [v1/challenge]
+ *     summary: Create a new challenge comment
+ *     description: Create a new comment for a challenge
+ *     tags: [v1/challenge-comments]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -126,10 +126,10 @@ challengeRouter.get(
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ChallengeInput'
+ *             $ref: '#/components/schemas/ChallengeCommentInput'
  *     responses:
  *       200:
- *         description: Challenge created successfully
+ *         description: Comment created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -138,7 +138,7 @@ challengeRouter.get(
  *                 - type: object
  *                   properties:
  *                     data:
- *                       $ref: '#/components/schemas/Challenge'
+ *                       $ref: '#/components/schemas/ChallengeComment'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:
@@ -146,9 +146,10 @@ challengeRouter.get(
  *       500:
  *         description: Internal server error
  */
-challengeRouter.post(
+
+challengeCommentRouter.post(
   "/",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
     res.locals.app
       .create(req.body)
       .then((response) => {
@@ -160,17 +161,13 @@ challengeRouter.post(
   },
 );
 
-////////
-// PUT
-////////
-
 /**
  * @swagger
- * /v1/challenge/{id}:
+ * /v1/challenge-comments/{id}:
  *   put:
- *     summary: Update a challenge (full update)
- *     description: Update all fields of an existing challenge
- *     tags: [v1/challenge]
+ *     summary: Update a challenge comment (full update)
+ *     description: Update all fields of an existing challenge comment
+ *     tags: [v1/challenge-comments]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -179,17 +176,17 @@ challengeRouter.post(
  *         required: true
  *         schema:
  *           type: string
- *         description: The challenge ID
- *         example: 507f1f77bcf86cd799439011
+ *         description: The comment ID
+ *         example: 609e129e8bfa4b0015b708a1
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ChallengeInput'
+ *             $ref: '#/components/schemas/ChallengeCommentInput'
  *     responses:
  *       200:
- *         description: Challenge updated successfully
+ *         description: Comment updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -198,7 +195,7 @@ challengeRouter.post(
  *                 - type: object
  *                   properties:
  *                     data:
- *                       $ref: '#/components/schemas/Challenge'
+ *                       $ref: '#/components/schemas/ChallengeComment'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:
@@ -208,11 +205,11 @@ challengeRouter.post(
  *       500:
  *         description: Internal server error
  */
-challengeRouter.put(
-  "/:id",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-    const { id } = req.params;
 
+challengeCommentRouter.put(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
+    const { id } = req.params;
     res.locals.app
       .update(id, req.body)
       .then((response) => {
@@ -224,17 +221,13 @@ challengeRouter.put(
   },
 );
 
-////////
-// PATCH
-////////
-
 /**
  * @swagger
- * /v1/challenge/{id}:
+ * /v1/challenge-comments/{id}:
  *   patch:
- *     summary: Update a challenge (partial update)
- *     description: Update specific fields of an existing challenge
- *     tags: [v1/challenge]
+ *     summary: Update a challenge comment (partial update)
+ *     description: Update specific fields of an existing challenge comment
+ *     tags: [v1/challenge-comments]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -243,8 +236,8 @@ challengeRouter.put(
  *         required: true
  *         schema:
  *           type: string
- *         description: The challenge ID
- *         example: 507f1f77bcf86cd799439011
+ *         description: The comment ID
+ *         example: 609e129e8bfa4b0015b708a1
  *     requestBody:
  *       required: true
  *       content:
@@ -252,20 +245,13 @@ challengeRouter.put(
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               text:
  *                 type: string
- *                 description: Challenge name
- *                 example: Updated Challenge Name
- *               userId:
- *                 type: string
- *                 description: User ID
- *               date:
- *                 type: string
- *                 format: date-time
- *                 description: Challenge date
+ *                 description: Comment text
+ *                 example: Updated comment text
  *     responses:
  *       200:
- *         description: Challenge updated successfully
+ *         description: Comment updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -274,7 +260,7 @@ challengeRouter.put(
  *                 - type: object
  *                   properties:
  *                     data:
- *                       $ref: '#/components/schemas/Challenge'
+ *                       $ref: '#/components/schemas/ChallengeComment'
  *       400:
  *         $ref: '#/components/responses/ValidationError'
  *       401:
@@ -284,11 +270,11 @@ challengeRouter.put(
  *       500:
  *         description: Internal server error
  */
-challengeRouter.patch(
-  "/:id",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-    const { id } = req.params;
 
+challengeCommentRouter.patch(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
+    const { id } = req.params;
     res.locals.app
       .update(id, req.body)
       .then((response) => {
@@ -300,17 +286,13 @@ challengeRouter.patch(
   },
 );
 
-////////
-// DELETE
-////////
-
 /**
  * @swagger
- * /v1/challenge/{id}:
+ * /v1/challenge-comments/{id}:
  *   delete:
- *     summary: Delete a challenge
- *     description: Delete an existing challenge by its ID
- *     tags: [v1/challenge]
+ *     summary: Delete a challenge comment
+ *     description: Delete an existing challenge comment by its ID
+ *     tags: [v1/challenge-comments]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -319,11 +301,11 @@ challengeRouter.patch(
  *         required: true
  *         schema:
  *           type: string
- *         description: The challenge ID
- *         example: 507f1f77bcf86cd799439011
+ *         description: The comment ID
+ *         example: 609e129e8bfa4b0015b708a1
  *     responses:
  *       200:
- *         description: Challenge deleted successfully
+ *         description: Comment deleted successfully
  *         content:
  *           application/json:
  *             schema:
@@ -335,11 +317,11 @@ challengeRouter.patch(
  *       500:
  *         description: Internal server error
  */
-challengeRouter.delete(
-  "/:id",
-  (req: ExpressRequest, res: ExpressResponse<ChallengeApp>) => {
-    const { id } = req.params;
 
+challengeCommentRouter.delete(
+  "/:id",
+  (req: ExpressRequest, res: ExpressResponse<ChallengeCommentApp>) => {
+    const { id } = req.params;
     res.locals.app
       .delete(id)
       .then((response) => {

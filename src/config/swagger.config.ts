@@ -116,6 +116,58 @@ const swaggerOptions: Options = {
                         }
                     }
                 }
+                ,
+                ChallengeComment: {
+                    type: "object",
+                    properties: {
+                        _id: {
+                            type: "string",
+                            description: "Comment ID",
+                            example: "609e129e8bfa4b0015b708a1"
+                        },
+                        text: {
+                            type: "string",
+                            description: "Comment text",
+                            example: "Great challenge!"
+                        },
+                        userId: {
+                            type: "string",
+                            description: "User ID who wrote the comment",
+                            example: "507f191e810c19729de860ea"
+                        },
+                        date: {
+                            type: "string",
+                            format: "date-time",
+                            description: "Comment date",
+                            example: "2026-01-27T12:00:00Z"
+                        },
+                        challengeId: {
+                            type: "string",
+                            description: "Challenge ID this comment belongs to",
+                            example: "507f1f77bcf86cd799439011"
+                        }
+                    }
+                },
+                ChallengeCommentInput: {
+                    type: "object",
+                    required: ["text", "userId"],
+                    properties: {
+                        text: {
+                            type: "string",
+                            description: "Comment text",
+                            example: "Great challenge!"
+                        },
+                        userId: {
+                            type: "string",
+                            description: "User ID",
+                            example: "507f191e810c19729de860ea"
+                        },
+                        challengeId: {
+                            type: "string",
+                            description: "Challenge ID"
+                        }
+                    }
+                }
             },
             responses: {
                 UnauthorizedError: {
@@ -158,6 +210,15 @@ const swaggerOptions: Options = {
             {
                 name: "p1/challenge",
                 description: "Public challenge endpoints (Read-only)"
+            }
+            ,
+            {
+                name: "p1/challenge-comments",
+                description: "Public challenge comment endpoints (Read-only)"
+            },
+            {
+                name: "v1/challenge-comments",
+                description: "Challenge comment endpoints (Authenticated)"
             }
         ]
     },

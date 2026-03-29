@@ -1,4 +1,3 @@
-import express from "express";
 import { ExpressResponse, ExpressRequest } from "../models";
 
 export class HttpResponse {
